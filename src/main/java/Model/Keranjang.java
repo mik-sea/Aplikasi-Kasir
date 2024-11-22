@@ -10,8 +10,8 @@ public class Keranjang {
     @Column(name = "id_keranjang",length = 36)
     private String id_keranjang;
 
-    @Column(name = "id_pembayaran", nullable = false)
-    private int id_pembayaran;
+    @Column(name = "id_pembayaran", nullable = false,length = 36)
+    private String id_pembayaran;
 
     @Column(name = "id_barang", nullable = false)
     private int id_barang;
@@ -30,11 +30,11 @@ public class Keranjang {
         this.id_keranjang = id_keranjang;
     }
 
-    public int getId_pembayaran() {
+    public String getId_pembayaran() {
         return id_pembayaran;
     }
 
-    public void setId_pembayaran(int id_pembayaran) {
+    public void setId_pembayaran(String id_pembayaran) {
         this.id_pembayaran = id_pembayaran;
     }
 
