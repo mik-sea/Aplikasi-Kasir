@@ -76,11 +76,36 @@ public class KasirController {
         return listTrans;
     }
 
-    //digunakan untuk membayar
-    public void bayar(int id) {
+    public List<Barang> getAllBarang(){
         Transaction tx = null;
+        List<Barang> listTrans = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
+            tx = session.beginTransaction();
+            Query<Barang> query = session.createQuery("from Barang ", Barang.class);
+            listTrans = query.list();
+            tx.commit();
+        }catch (Exception e){
+            if(tx != null){
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+        return listTrans;
+    }
 
+
+    //digunakan untuk membayar
+    public void bayar(Pembayaran pembayaran) {
+        Transaction tx = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+            session.save(pembayaran);
+            tx.commit();
+        }catch (Exception e) {
+            if(tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
         }
     }
 }

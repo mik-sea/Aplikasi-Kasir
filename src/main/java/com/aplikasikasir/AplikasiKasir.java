@@ -5,8 +5,12 @@
 package com.aplikasikasir;
 
 import Controller.KasirController;
+import Model.Barang;
 import Model.HibernateUtil;
 import Model.Keranjang;
+import Model.Pembayaran;
+
+import java.util.List;
 import java.util.UUID;
 /**
  *
@@ -20,7 +24,9 @@ public class AplikasiKasir {
         //input
         HibernateUtil.testConnection();
 //        testAddKeranjang();
-        testRemoveKeranjang();
+//        testRemoveKeranjang();
+//        testAddBayar();
+        testListBarang();
     }
 
     static void testAddKeranjang(){
@@ -45,5 +51,23 @@ public class AplikasiKasir {
         keranjang.setId_pembayaran(uid);
         KasirController controller = new KasirController();
         controller.updateKeranjang(keranjang);
+    }
+
+    static void testAddBayar(){
+        Pembayaran pembayaran = new Pembayaran();
+        pembayaran.setId_pembayaran("2a5a5f5c-a1d8-4fdb-9a15-4a488bdecf84");
+        pembayaran.setStatus("done");
+        pembayaran.setTotal(20);
+        KasirController controller = new KasirController();
+        controller.bayar(pembayaran);
+    }
+
+    static void testListBarang(){
+        KasirController controller = new KasirController();
+//        controller.getAllBarang();
+        List<Barang> listbarang = controller.getAllBarang();
+        for(Barang barang : listbarang){
+            System.out.println(barang.getNama_barang());
+        }
     }
 }

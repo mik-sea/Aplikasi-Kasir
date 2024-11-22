@@ -21,4 +21,44 @@ public class Barang {
 
     @Column(name = "harga", nullable = false, length = 10)
     private int harga;
+
+    public int getId_barang() {
+        return id_barang;
+    }
+
+    public void setId_barang(int id_barang) {
+        this.id_barang = id_barang;
+    }
+
+    public String getNama_barang() {
+        return nama_barang;
+    }
+
+    public void setNama_barang(String nama_barang) {
+        this.nama_barang = nama_barang;
+    }
+
+    public String getMerk_barang() {
+        return merk_barang;
+    }
+
+    public void setMerk_barang(String merk_barang) {
+        this.merk_barang = merk_barang;
+    }
+
+    public int getTotal_barang() {
+        return total_barang;
+    }
+
+    public void setTotal_barang(int total_barang) {
+        this.total_barang = total_barang;
+    }
+
+    public int getHarga() {
+        return harga;
+    }
+
+    public void setHarga(int harga) {
+        this.harga = harga;
+    }
 }
