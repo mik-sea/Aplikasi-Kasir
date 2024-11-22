@@ -16,6 +16,9 @@ public class Barang {
     @Column(name = "merk_barang", nullable = false, length = 50)
     private String merk_barang;
 
-    @Column(name = "total", nullable = false, length = 10)
-    private int total;
+    @Column(name = "total_barang", nullable = false, length = 10)
+    private int total_barang;
+
+    @Column(name = "harga", nullable = false, length = 10)
+    private int harga;
 }

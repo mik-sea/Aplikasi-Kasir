@@ -26,7 +26,7 @@
 
         <!-- Mapping class -->
         <mapping class="Model.Barang"/>
-        <mapping class="Model.Transaksi"/>
         <mapping class="Model.Keranjang"/>
+        <mapping class="Model.Pembayaran"/>
     </session-factory>
 </hibernate-configuration>

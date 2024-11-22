@@ -8,11 +8,11 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 public class KasirController {
-    public void addTransaksi(Transaksi transaksi) {
+    public void addKeranjang(Keranjang keranjang) {
         Transaction tx = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
-            session.save(transaksi);
+            session.save(keranjang);
             tx.commit();
         }catch (Exception e) {
             if(tx != null) {
@@ -22,11 +22,11 @@ public class KasirController {
         }
     }
 
-    public void updateTransaksi(Transaksi transaksi) {
+    public void updateTransaksi(Keranjang keranjang) {
         Transaction tx = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             tx = session.beginTransaction();
-            session.update(transaksi);
+            session.update(keranjang);
             tx.commit();
         }catch(Exception e){
             if(tx != null){
@@ -40,9 +40,9 @@ public class KasirController {
         Transaction tx = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             tx = session.beginTransaction();
-            Transaksi mhs = session.get(Transaksi.class,id);
-            if(mhs != null){
-                session.delete(mhs);
+            Keranjang keranjang = session.get(Keranjang.class,id);
+            if(keranjang != null){
+                session.delete(keranjang);
                 System.out.println("Berhasil Dihapus!");
             }
             tx.commit();
@@ -55,12 +55,12 @@ public class KasirController {
         }
     }
 
-    public List<Transaksi> getAllTransaksi(){
+    public List<Keranjang> getAllKeranjang(){
         Transaction tx = null;
-        List<Transaksi> listTrans = null;
+        List<Keranjang> listTrans = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             tx = session.beginTransaction();
-            Query<Transaksi> query = session.createQuery("from Transaksi ", Transaksi.class);
+            Query<Keranjang> query = session.createQuery("from Keranjang", Keranjang.class);
             listTrans = query.list();
             tx.commit();
         }catch (Exception e){
@@ -70,5 +70,12 @@ public class KasirController {
             e.printStackTrace();
         }
         return listTrans;
+    }
+
+    public void bayar(int id) {
+        Transaction tx = null;
+        try(Session session = HibernateUtil.getSessionFactory().openSession()){
+
+        }
     }
 }

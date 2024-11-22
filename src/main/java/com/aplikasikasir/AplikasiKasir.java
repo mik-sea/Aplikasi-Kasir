@@ -6,7 +6,6 @@ package com.aplikasikasir;
 
 import Controller.KasirController;
 import Model.HibernateUtil;
-import Model.Transaksi;
 
 /**
  *
@@ -18,8 +17,7 @@ public class AplikasiKasir {
         KasirController controller;
         //testing
         //input
-        Transaksi transaksi = new Transaksi(1);
-        controller = new KasirController();
-        controller.addTransaksi(transaksi);
+        HibernateUtil.testConnection();
+
     }
 }
