@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 public class KasirController {
+    //untuk menambahkan data ke keranjang dari pembelian pembeli
     public void addKeranjang(Keranjang keranjang) {
         Transaction tx = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -22,7 +23,8 @@ public class KasirController {
         }
     }
 
-    public void updateTransaksi(Keranjang keranjang) {
+    //update table apabila terjadi kesalahan mengetik atau menambah jumlah pembelian
+    public void updateKeranjang(Keranjang keranjang) {
         Transaction tx = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             tx = session.beginTransaction();
@@ -36,7 +38,8 @@ public class KasirController {
         }
     }
 
-    public void deleteTransaksi(int id) {
+    //menghapus transaksi yang belum melakukan pembayaran atau tidak jadi bayarnya
+    public void deleteKeranjang(int id) {
         Transaction tx = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
             tx = session.beginTransaction();
@@ -55,6 +58,7 @@ public class KasirController {
         }
     }
 
+    // menampilkan semua list dari keranjang
     public List<Keranjang> getAllKeranjang(){
         Transaction tx = null;
         List<Keranjang> listTrans = null;
@@ -72,6 +76,7 @@ public class KasirController {
         return listTrans;
     }
 
+    //digunakan untuk membayar
     public void bayar(int id) {
         Transaction tx = null;
         try(Session session = HibernateUtil.getSessionFactory().openSession()){
