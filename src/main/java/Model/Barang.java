@@ -22,6 +22,10 @@ public class Barang {
     @Column(name = "harga", nullable = false, length = 10)
     private int harga;
 
+//    @ManyToOne
+//    @JoinColumn(name = "id_barang")
+//    private Keranjang keranjang;
+
     public int getId_barang() {
         return id_barang;
     }

@@ -1,7 +1,7 @@
 package Model;
 
 import jakarta.persistence.*;
-
+import java.util.List;
 @Entity
 @Table(name = "keranjang")
 public class Keranjang {
@@ -21,6 +21,9 @@ public class Keranjang {
 
     @Column(name = "status", nullable = false, length = 50)
     private String status;
+
+    @OneToMany(mappedBy = "id_barang")
+    private List<Barang> barang;
 
     public String getId_keranjang() {
         return id_keranjang;

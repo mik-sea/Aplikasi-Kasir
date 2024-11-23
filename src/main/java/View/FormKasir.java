@@ -4,8 +4,13 @@
  */
 package View;
 
+import Controller.KasirController;
+import Model.Barang;
+import Model.KeranjangWithBarang;
+import Model.ModelTabelKeranjang;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import javax.swing.*;
+import java.util.List;
 
 /**
  *
@@ -20,11 +25,22 @@ public class FormKasir extends javax.swing.JFrame {
         initComponents();
         
         AutoCompleteDecorator.decorate(listBarang);
-        
-        listBarang.addItem("Merah");
-        listBarang.addItem("Hijau");
-        listBarang.addItem("Biru");
-       
+        listBarangToShow();
+        loadMahasiswaTable();
+    }
+    private void listBarangToShow() {
+        KasirController controller = new KasirController();
+//        controller.getAllBarang();
+        List<Barang> listbarang = controller.getAllBarang();
+        for(Barang barang : listbarang){
+            listBarang.addItem(barang.getNama_barang());
+        }
+    }
+    public void loadMahasiswaTable(){
+        KasirController controller = new KasirController();
+        List<KeranjangWithBarang> listKeranjang = controller.getAllKeranjangBarang();
+        ModelTabelKeranjang tableModel = new ModelTabelKeranjang(listKeranjang);
+        jTable1.setModel(tableModel);
     }
     
 
@@ -60,7 +76,6 @@ public class FormKasir extends javax.swing.JFrame {
         jLabel2.setText("Nama Barang");
 
         listBarang.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        listBarang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fresh Tea", "Kinder Joy", "Roti Sobek", "Pocari", "Mie Indomie" }));
         listBarang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 listBarangActionPerformed(evt);
@@ -146,7 +161,6 @@ public class FormKasir extends javax.swing.JFrame {
                         .addGap(323, 323, 323))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jButton4)
                                 .addGroup(layout.createSequentialGroup()
@@ -157,7 +171,6 @@ public class FormKasir extends javax.swing.JFrame {
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(totalbarangField)
                                         .addComponent(listBarang, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(tambahkanButton)
                                     .addGap(43, 43, 43)
@@ -166,6 +179,8 @@ public class FormKasir extends javax.swing.JFrame {
                                     .addComponent(EditButton))
                                 .addComponent(jLabel4)
                                 .addComponent(totalhargaField)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel5)
                                 .addComponent(pembayaranField))
                             .addComponent(jButton5))
                         .addGap(52, 52, 52))))
@@ -175,7 +190,7 @@ public class FormKasir extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel1)
-                .addGap(29, 29, 29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(listBarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -183,24 +198,24 @@ public class FormKasir extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(totalbarangField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tambahkanButton)
                     .addComponent(hapusButton)
                     .addComponent(EditButton))
-                .addGap(36, 36, 36)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(totalhargaField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4)
-                .addGap(39, 39, 39)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(pembayaranField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );

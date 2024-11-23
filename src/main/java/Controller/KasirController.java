@@ -93,6 +93,32 @@ public class KasirController {
         return listTrans;
     }
 
+    public List<KeranjangWithBarang> getAllKeranjangBarang() {
+        Transaction tx = null;
+        List<KeranjangWithBarang> listTrans = null;
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+
+            // Query HQL untuk memetakan hasil ke DTO
+            String hql = "SELECT new Model.KeranjangWithBarang(b.nama_barang, b.harga, k.total, k.status) " +
+                    "FROM Keranjang k " +
+                    "JOIN k.barang b";
+
+            Query<KeranjangWithBarang> query = session.createQuery(hql, KeranjangWithBarang.class);
+            listTrans = query.getResultList();
+
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        }
+
+        return listTrans;
+    }
+
 
     //digunakan untuk membayar
     public void bayar(Pembayaran pembayaran) {

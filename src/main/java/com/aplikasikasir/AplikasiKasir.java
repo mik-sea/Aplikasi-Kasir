@@ -5,10 +5,8 @@
 package com.aplikasikasir;
 
 import Controller.KasirController;
-import Model.Barang;
-import Model.HibernateUtil;
-import Model.Keranjang;
-import Model.Pembayaran;
+import Model.*;
+import View.FormKasir;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,7 +24,10 @@ public class AplikasiKasir {
 //        testAddKeranjang();
 //        testRemoveKeranjang();
 //        testAddBayar();
-        testListBarang();
+//        testListBarang();
+        FormKasir form = new FormKasir();
+        form.setVisible(true);
+        
     }
 
     static void testAddKeranjang(){
@@ -65,9 +66,9 @@ public class AplikasiKasir {
     static void testListBarang(){
         KasirController controller = new KasirController();
 //        controller.getAllBarang();
-        List<Barang> listbarang = controller.getAllBarang();
-        for(Barang barang : listbarang){
-            System.out.println(barang.getNama_barang());
+        List<KeranjangWithBarang> listbarang = controller.getAllKeranjangBarang();
+        for(KeranjangWithBarang barang : listbarang){
+            System.out.println(barang.getStatus());
         }
     }
 }
