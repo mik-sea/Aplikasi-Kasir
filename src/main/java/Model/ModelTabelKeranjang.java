@@ -18,6 +18,7 @@ public class ModelTabelKeranjang extends AbstractTableModel{
         return columnNames.length;
     }
 
+    //update value
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         KeranjangWithBarang keranjang = listKeranjang.get(rowIndex);
