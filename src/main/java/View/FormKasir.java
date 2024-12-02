@@ -6,6 +6,7 @@ package View;
 
 import Controller.KasirController;
 import Model.Barang;
+import Model.Keranjang;
 import Model.KeranjangWithBarang;
 import Model.ModelTabelKeranjang;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
@@ -36,13 +37,26 @@ public class FormKasir extends javax.swing.JFrame {
             listBarang.addItem(barang.getNama_barang());
         }
     }
-    public void loadMahasiswaTable(){
-        KasirController controller = new KasirController();
-        List<KeranjangWithBarang> listKeranjang = controller.getAllKeranjangBarang();
-        ModelTabelKeranjang tableModel = new ModelTabelKeranjang(listKeranjang);
-        jTable1.setModel(tableModel);
+    public void loadMahasiswaTable() {
+        try {
+            KasirController controller = new KasirController();
+            List<Keranjang> listKeranjang = controller.getAllKeranjang();
+            System.out.println("Jumlah data yang diambil: " + listKeranjang.size());
+
+            ModelTabelKeranjang tableModel = new ModelTabelKeranjang(listKeranjang);
+            jTable1.setModel(tableModel);
+
+            // Refresh JTable
+            jTable1.revalidate();
+            jTable1.repaint();
+            System.out.println("Tabel berhasil diperbarui.");
+        } catch (Exception e) {
+            System.out.println("Terjadi kesalahan saat memuat data ke tabel: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
-    
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -91,7 +105,7 @@ public class FormKasir extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nama Barang", "Harga Barang", "Total Barang", "Total Harga"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -106,12 +120,27 @@ public class FormKasir extends javax.swing.JFrame {
 
         hapusButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         hapusButton.setText("Hapus");
+        hapusButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hapusButtonActionPerformed(evt);
+            }
+        });
 
         EditButton.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         EditButton.setText("Edit");
+        EditButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditButtonActionPerformed(evt);
+            }
+        });
 
         jButton4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton4.setText("Total");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Total Barang");
@@ -121,6 +150,7 @@ public class FormKasir extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel4.setText("Total Harga");
 
+        totalhargaField.setEditable(false);
         totalhargaField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         totalhargaField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -231,17 +261,153 @@ public class FormKasir extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_totalhargaFieldActionPerformed
 
-    private void tambahkanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahkanButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tambahkanButtonActionPerformed
+    private void tambahkanButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        // Validasi input
+        String nama_barang = listBarang.getSelectedItem() != null ? listBarang.getSelectedItem().toString().toLowerCase() : "";
+        if (nama_barang.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nama barang tidak boleh kosong!");
+            return;
+        }
+        System.out.println(nama_barang);
+        try {
+            int total_barang = Integer.parseInt(totalbarangField.getText());
+            if (total_barang <= 0) {
+                JOptionPane.showMessageDialog(this, "Jumlah barang harus lebih dari nol!");
+                return;
+            }
+
+            KasirController kasirController = new KasirController();
+            List<Barang> kbarang = kasirController.getByNameKeranjangBarang(nama_barang);
+
+            // Proses perhitungan harga
+            int total_harga = 0;
+            System.out.println(nama_barang);
+            for (Barang item : kbarang) {
+                System.out.println("harga :"+item.getHarga());
+                total_harga += total_barang * item.getHarga(); // asumsi item memiliki metode getHarga()
+                System.out.println("harga :"+item);
+            }
+
+            // Menambahkan ke keranjang
+            Keranjang keranjang = new Keranjang();
+            keranjang.setStatus("wait");
+            keranjang.setNama_barang(nama_barang);
+            keranjang.setTotal_harga(total_harga);
+            keranjang.setTotal_barang(total_barang);
+            kasirController.addKeranjang(keranjang);
+            System.out.println("total barang :"+total_barang);
+
+            // Memuat ulang tabel
+            loadMahasiswaTable();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Jumlah barang harus berupa angka!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat menambahkan barang ke keranjang.");
+        }
+    }
 
     private void pembayaranFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pembayaranFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_pembayaranFieldActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+        int totalharga = Integer.parseInt(totalhargaField.getText());
+        String pembayarantext = pembayaranField.getText();
+        int pembayaran = Integer.parseInt(pembayarantext);
+        if(pembayarantext.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Pastikan input pembayaran yang sesuai");
+        }
+        if(pembayaran < totalharga){
+            JOptionPane.showMessageDialog(this, "Pembayaran Kurang!");
+        }
+        else if(pembayaran == totalharga){
+            JOptionPane.showMessageDialog(this, "Pembayaran Berhasil!\nTerima kasih sudah membeli!");
+            // Menghitung jumlah total harga pada kolom ke-3 (indeks 2)
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                Object value = jTable1.getValueAt(i, 0);
+                KasirController kasir = new KasirController();
+                kasir.deleteKeranjang(Integer.parseInt(value.toString()));
+            }
+        }else if(pembayaran > totalharga){
+            int totalkembalian = pembayaran - totalharga;
+            JOptionPane.showMessageDialog(this, "Pembayaran Berhasil!\nKembalian : Rp. "+totalkembalian);
+            // Menghitung jumlah total harga pada kolom ke-3 (indeks 2)
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                Object value = jTable1.getValueAt(i, 0);
+                KasirController kasir = new KasirController();
+                kasir.deleteKeranjang(Integer.parseInt(value.toString()));
+
+            }
+        }
+        loadMahasiswaTable();
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void hapusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusButtonActionPerformed
+        // Mendapatkan indeks baris yang dipilih
+        int selectedRow = jTable1.getSelectedRow();
+        Object idValue = jTable1.getValueAt(selectedRow, 0);
+        // Mengecek apakah ada baris yang dipilih
+        if (selectedRow != -1) {
+            // Menghapus baris dari model
+            KasirController kasir = new KasirController();
+            kasir.deleteKeranjang(Integer.parseInt(idValue.toString()));
+            loadMahasiswaTable();
+        }
+    }//GEN-LAST:event_hapusButtonActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // Inisialisasi total harga
+        int totalHarga = 0;
+
+        // Menghitung jumlah total harga pada kolom ke-3 (indeks 2)
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            // Mendapatkan nilai dari kolom Total Harga
+            Object value = jTable1.getValueAt(i, 3);
+
+            // Jika nilai tersebut adalah angka (double)
+            if (value instanceof Number) {
+                totalHarga += ((Number) value).intValue();
+            }
+        }
+        totalhargaField.setText(String.valueOf(totalHarga));
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void EditButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditButtonActionPerformed
+        // Mendapatkan indeks baris yang dipilih
+        int selectedRow = jTable1.getSelectedRow();
+        Object idValue = jTable1.getValueAt(selectedRow, 0);
+        Object nama_barang = jTable1.getValueAt(selectedRow, 1);
+        Object total_barang = jTable1.getValueAt(selectedRow, 2);
+        Object total_harga = jTable1.getValueAt(selectedRow, 3);
+        KasirController kasir = new KasirController();
+        Keranjang keranjang = new Keranjang();
+        //hitung total harga
+        KasirController kasirController = new KasirController();
+        List<Barang> kbarang = kasirController.getByNameKeranjangBarang((String) nama_barang);
+
+        // Proses perhitungan harga
+        int total_harga_akhir = 0;
+        System.out.println(nama_barang);
+        for (Barang item : kbarang) {
+            System.out.println("harga :"+item.getHarga());
+            total_harga_akhir += Integer.parseInt(String.valueOf(total_barang)) * item.getHarga(); // asumsi item memiliki metode getHarga()
+            System.out.println("harga :"+item);
+        }
+
+        keranjang.setId_keranjang(Integer.parseInt(String.valueOf(idValue)));
+        keranjang.setNama_barang(String.valueOf(nama_barang));
+        keranjang.setTotal_barang(Integer.parseInt(String.valueOf(total_barang)));
+        keranjang.setTotal_harga(total_harga_akhir);
+        keranjang.setStatus("wait");
+        kasir.updateKeranjang(keranjang);
+        System.out.println("ID: " + idValue);
+        System.out.println("Nama Barang: " + nama_barang);
+        System.out.println("Total Barang: " + total_barang);
+        System.out.println("Total Harga: " + total_harga);
+
+        loadMahasiswaTable();
+    }//GEN-LAST:event_EditButtonActionPerformed
 
     /**
      * @param args the command line arguments

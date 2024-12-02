@@ -5,13 +5,16 @@ import jakarta.persistence.*;
 public class KeranjangWithBarang {
     private String nama_barang;
     private int harga;
-    private int total;
+    private int total_barang;
+    private int total_harga;
     private String status;
 
-    public KeranjangWithBarang(String nama_barang, int harga, int total, String status) {
+
+    public KeranjangWithBarang(String nama_barang, int harga, int total_barang, int total_harga, String status) {
         this.nama_barang = nama_barang;
         this.harga = harga;
-        this.total = total;
+        this.total_barang = total_barang;
+        this.total_harga = total_harga;
         this.status = status;
     }
     public String getNamaBarang() {
@@ -30,13 +33,6 @@ public class KeranjangWithBarang {
         this.harga = harga;
     }
 
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
 
     public String getStatus() {
         return status;
@@ -44,5 +40,21 @@ public class KeranjangWithBarang {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getTotal_barang() {
+        return total_barang;
+    }
+
+    public void setTotal_barang(int total_barang) {
+        this.total_barang = total_barang;
+    }
+
+    public int getTotal_harga() {
+        return total_harga;
+    }
+
+    public void setTotal_harga(int total_harga) {
+        this.total_harga = total_harga;
     }
 }

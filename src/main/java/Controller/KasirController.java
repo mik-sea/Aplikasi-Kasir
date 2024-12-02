@@ -19,6 +19,7 @@ public class KasirController {
             if(tx != null) {
                 tx.rollback();
             }
+            System.out.println(e);
             e.printStackTrace();
         }
     }
@@ -101,7 +102,7 @@ public class KasirController {
             tx = session.beginTransaction();
 
             // Query HQL untuk memetakan hasil ke DTO
-            String hql = "SELECT new Model.KeranjangWithBarang(b.nama_barang, b.harga, k.total, k.status) " +
+            String hql = "SELECT new Model.KeranjangWithBarang(b.nama_barang, b.harga, k.total_barang, k.total_harga, k.status) " +
                     "FROM Keranjang k " +
                     "JOIN k.barang b";
 
@@ -118,6 +119,25 @@ public class KasirController {
 
         return listTrans;
     }
+    public List<Barang> getByNameKeranjangBarang(String nama_barang) {
+        List<Barang> listTrans = null;
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+//            String hql = "SELECT new Model.KeranjangWithBarang(b.nama_barang, b.harga, k.total_barang, k.total_harga, k.status) " +
+//                    "FROM Keranjang k " +
+//                    "JOIN k.barang b where LOWER(b.nama_barang) = LOWER(:nama_barang)";
+            String hql = "SELECT b FROM Barang b WHERE LOWER(b.nama_barang) = LOWER(:nama_barang)";
+            Query<Barang> query = session.createQuery(hql, Barang.class);
+            query.setParameter("nama_barang", nama_barang);
+            listTrans = query.getResultList();
+            System.out.println(listTrans);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return listTrans;
+    }
+
 
 
     //digunakan untuk membayar
